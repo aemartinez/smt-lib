@@ -1,5 +1,5 @@
 -- | Parsing and printing SMT-LIB.
-module Language.SMTLIB
+module SMTLIB
   (
   -- * Syntax
     Numeral
@@ -53,7 +53,7 @@ import System.IO
 import Text.ParserCombinators.Poly.Lazy hiding (Success)
 import Text.Printf
 
-import Language.SMTLIB.Lexer
+import SMTLIB.Lexer
 
 type Numeral      = Integer
 type Symbol       = String

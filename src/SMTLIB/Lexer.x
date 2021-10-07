@@ -1,14 +1,7 @@
 {
-module Language.SMTLIB.Lexer
+module SMTLIB.Lexer
   ( Token (..)
   , lexSMTLIB
-  , alexScanTokens
-  , alexAndPred
-  , alexPrevCharIs
-  , alexPrevCharIsOneOf
-  , alexRightContext
-  , iUnbox
-  , alexInputPrevChar
   ) where
 }
 
