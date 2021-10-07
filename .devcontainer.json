@@ -1,0 +1,6 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json
+{
+	"image": "haskell:latest",
+	"extensions": ["martinring.smt-lib-syntax", "haskell.haskell"],
+	"postStartCommand": "cabal update; cabal install alex"
+}
