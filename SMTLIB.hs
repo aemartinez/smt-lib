@@ -468,6 +468,7 @@ data Command
   | Declare_sort Symbol Numeral
   | Define_sort  Symbol [Symbol] Sort
   | Declare_fun  Symbol [Sort] Sort
+  | Declare_const  Symbol Sort
   | Define_fun   Symbol [Sorted_var] Sort Term
   | Push Int
   | Pop  Int
@@ -490,6 +491,7 @@ instance Show Command where
     Declare_sort a b -> group ["declare-sort", a, show b]
     Define_sort  a b c -> group ["define-sort", a, group (map show b), show c]
     Declare_fun  a b c -> group ["declare-fun", a, group (map show b), show c]
+    Declare_const  a b -> group ["declare-const", a, show b]
     Define_fun   a b c d -> group ["define-fun", a, group (map show b), show c, show d]
     Push a -> group ["push", show a]
     Pop  a -> group ["pop",  show a]
@@ -512,6 +514,7 @@ command = oneOf
   , do { left; tok $ Symbol "declare-sort"; a <- symbol; b <- numeral; right; return $ Declare_sort a b }
   , do { left; tok $ Symbol "define-sort"; a <- symbol; left; b <- many symbol; right; c <- sort'; right; return $ Define_sort a b c }
   , do { left; tok $ Symbol "declare-fun"; a <- symbol; left; b <- many sort'; right; c <- sort'; right; return $ Declare_fun a b c }
+  , do { left; tok $ Symbol "declare-const"; a <- symbol; b <- sort'; right; return $ Declare_const a b }
   , do { left; tok $ Symbol "define-fun"; a <- symbol; left; b <- many sorted_var; right; c <- sort'; d <- term; right; return $ Define_fun a b c d }
   , do { left; tok $ Symbol "push"; a <- numeral; right; return $ Push $ fromIntegral a }
   , do { left; tok $ Symbol "pop"; a <- numeral; right; return $ Pop $ fromIntegral a }
