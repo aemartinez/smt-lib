@@ -2,5 +2,5 @@
 {
 	"image": "haskell:latest",
 	"extensions": ["martinring.smt-lib-syntax", "haskell.haskell"],
-	"postStartCommand": "cabal update; cabal install alex"
+	"postCreateCommand": "cabal update; cabal install --lib polyparse; cabal install --lib MissingH"
 }
