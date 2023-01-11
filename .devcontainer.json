@@ -1,6 +1,5 @@
 // For format details, see https://aka.ms/vscode-remote/devcontainer.json
 {
 	"image": "haskell:latest",
-	"extensions": ["martinring.smt-lib-syntax", "haskell.haskell"],
-	"postCreateCommand": "cabal update; cabal install --lib polyparse; cabal install --lib MissingH"
+	"extensions": ["martinring.smt-lib-syntax", "haskell.haskell"]
 }

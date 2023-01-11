@@ -8,7 +8,7 @@ import SMTLIB
 import System.IO
 import System.Process
 import Data.String.Utils
-import Control.Monad
+import Control.Monad()
 
 isSat :: Script -> IO Bool
 isSat script = do
