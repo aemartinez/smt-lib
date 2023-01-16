@@ -2,13 +2,6 @@
 module Language.SMTLIB.Lexer
   ( Token (..)
   , lexSMTLIB
-  , alexScanTokens
-  , alexAndPred
-  , alexPrevCharIs
-  , alexPrevCharIsOneOf
-  , alexRightContext
-  , iUnbox
-  , alexInputPrevChar
   ) where
 }
 
