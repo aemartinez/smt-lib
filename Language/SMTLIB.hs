@@ -41,15 +41,23 @@ module Language.SMTLIB
   , parseResponses
   , parseTheory
   , parseLogic
+  , parseCommands
+  , parseAssertedTerms
   -- * Parsing Verification
   , checkScript
   , checkResponses
   , checkParser
   -- * Manipulation
   , mapS
+  , smtAND
+  , smtNOT
+  , smtTrue
+  , smtEq
+  , smtPlus
+  , smtConstName
   ) where
 
-import Data.List hiding (group)
+import Data.List as L hiding (group)
 import System.Directory
 import System.IO
 import Text.ParserCombinators.Poly.Lazy hiding (Success)
@@ -812,6 +820,18 @@ checkParser = do
             return pass
           else return True
 
+parseCommands :: String -> [Command]
+parseCommands s = case parseScript s of Script cmds -> cmds
+
+parseAssertedTerms :: String -> Term
+parseAssertedTerms s = do
+    let cmds = parseCommands s
+        term = conjunctionOf (extractTerms cmds)
+            where extractTerms = L.map (\(Assert t) -> t)
+                  conjunctionOf = L.foldl (\t t' -> smtAND t t') smtTrue
+    term
+
+-- MapSymbol class for renaming symbols in SMTLIB Script
   
 class MapSymbol a where
     mapS :: (Symbol -> Symbol) -> a -> a
@@ -897,3 +917,28 @@ instance MapSymbol Option where
     mapS f opt =
         case opt of Option_attribute attr -> Option_attribute (mapS f attr)
                     _ -> opt
+
+
+-- High level operations for manipulating terms
+
+smtAND :: Term -> Term -> Term
+smtAND t1 t2 = Term_qual_identifier_ andIdf [t1, t2]
+    where andIdf = Qual_identifier (Identifier "and")
+
+smtNOT :: Term -> Term
+smtNOT t1 = Term_qual_identifier_ notIdf [t1]
+    where notIdf = Qual_identifier (Identifier "not")
+
+smtTrue :: Term
+smtTrue = (Term_qual_identifier (Qual_identifier (Identifier "true")))
+
+smtEq :: Term -> Term -> Term
+smtEq t1 t2 = Term_qual_identifier_ eqId [t1, t2]
+    where eqId = Qual_identifier (Identifier "=")
+
+smtPlus :: Term -> Term -> Term
+smtPlus t1 t2 = Term_qual_identifier_ plusId [t1, t2]
+    where plusId = Qual_identifier (Identifier "+")
+
+smtConstName :: String -> Term
+smtConstName s = (Term_qual_identifier (Qual_identifier (Identifier s)))
