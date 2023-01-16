@@ -45,6 +45,8 @@ module Language.SMTLIB
   , checkScript
   , checkResponses
   , checkParser
+  -- * Manipulation
+  , mapS
   ) where
 
 import Data.List hiding (group)
@@ -65,6 +67,7 @@ data Spec_constant
   | Spec_constant_hexadecimal String
   | Spec_constant_binary      [Bool]
   | Spec_constant_string      String
+  deriving (Eq, Ord)
 
 instance Show Spec_constant where
   show a = case a of
@@ -92,6 +95,7 @@ data S_expr
   | S_expr_symbol   Symbol
   | S_expr_keyword  Keyword
   | S_exprs         [S_expr]
+  deriving (Eq, Ord)
 
 instance Show S_expr where
   show a = case a of
@@ -111,6 +115,7 @@ s_expr = oneOf
 data Identifier
   = Identifier  Symbol
   | Identifier_ Symbol [Numeral]
+  deriving (Eq, Ord)
 
 instance Show Identifier where
   show a = case a of
@@ -127,6 +132,7 @@ data Sort
   = Sort_bool
   | Sort_identifier  Identifier
   | Sort_identifiers Identifier [Sort]
+  deriving (Eq, Ord)
 
 instance Show Sort where
   show a = case a of
@@ -162,6 +168,7 @@ attribute_value = oneOf
 data Attribute
   = Attribute        Keyword
   | Attribute_s_expr Keyword S_expr
+  deriving (Eq, Ord)
 
 instance Show Attribute where
   show a = case a of
@@ -177,6 +184,7 @@ attribute = oneOf
 data Qual_identifier
   = Qual_identifier      Identifier
   | Qual_identifier_sort Identifier Sort
+  deriving (Eq, Ord)
 
 instance Show Qual_identifier where
   show a = case a of
@@ -191,6 +199,7 @@ qual_identifier = oneOf
 
 data Var_binding
   = Var_binding Symbol Term
+  deriving (Eq, Ord)
 
 instance Show Var_binding where
   show a = case a of
@@ -201,6 +210,7 @@ var_binding = do { left; a <- symbol; b <- term; right; return $ Var_binding a b
 
 data Sorted_var
   = Sorted_var Symbol Sort
+  deriving (Eq, Ord)
 
 instance Show Sorted_var where
   show a = case a of
@@ -218,6 +228,7 @@ data Term
   | Term_forall           [Sorted_var] Term
   | Term_exists           [Sorted_var] Term
   | Term_attributes       Term [Attribute]
+  deriving (Eq, Ord)
 
 instance Show Term where
   show a = case a of
@@ -396,6 +407,7 @@ data Option
   | Random_seed Int
   | Verbosity Int
   | Option_attribute Attribute
+  deriving (Eq, Ord)
 
 instance Show Option where
   show a = case a of
@@ -437,6 +449,7 @@ data Info_flag
   | Reason_unknown
   | Info_flag Keyword
   | All_statistics
+  deriving (Eq, Ord)
 
 instance Show Info_flag where
   show a = case a of
@@ -482,6 +495,7 @@ data Command
   | Get_option Keyword
   | Get_info Info_flag
   | Exit
+  deriving (Eq, Ord)
 
 instance Show Command where
   show a = case a of
@@ -531,6 +545,7 @@ command = oneOf
   ]
 
 data Script = Script [Command]
+    deriving (Eq, Ord)
 
 instance Show Script where
   show (Script a) = unlines $ map show a
