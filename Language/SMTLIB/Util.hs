@@ -7,6 +7,7 @@ module Language.SMTLIB.Util
   , smtEq
   , smtPlus
   , smtConstName
+  , smtBinOp
 ) where
 
 import Language.SMTLIB
@@ -118,6 +119,10 @@ smtEq t1 t2 = Term_qual_identifier_ eqId [t1, t2]
 smtPlus :: Term -> Term -> Term
 smtPlus t1 t2 = Term_qual_identifier_ plusId [t1, t2]
     where plusId = Qual_identifier (Identifier "+")
+
+smtBinOp :: String -> Term -> Term -> Term
+smtBinOp op t1 t2 = Term_qual_identifier_ opId [t1, t2]
+    where opId = Qual_identifier (Identifier op)
 
 smtConstName :: String -> Term
 smtConstName s = (Term_qual_identifier (Qual_identifier (Identifier s)))
