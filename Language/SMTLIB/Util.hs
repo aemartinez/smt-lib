@@ -1,3 +1,5 @@
+-- Copyright (c) 2023 Agustin Martinez Sune 
+
 module Language.SMTLIB.Util 
 (
     mapS
