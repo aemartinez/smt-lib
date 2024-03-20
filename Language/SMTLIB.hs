@@ -50,6 +50,7 @@ module Language.SMTLIB
   ) where
 
 import Data.List as L hiding (group)
+import Numeric (showFFloat)
 import System.Directory
 import System.IO
 import Text.ParserCombinators.Poly.Lazy hiding (Success)
@@ -72,7 +73,7 @@ data Spec_constant
 instance Show Spec_constant where
   show a = case a of
     Spec_constant_numeral     a -> show a
-    Spec_constant_decimal     a -> show (realToFrac a :: Double)
+    Spec_constant_decimal     a -> showFFloat Nothing (realToFrac a :: Double) ""
     Spec_constant_hexadecimal a -> printf "#x%s" a
     Spec_constant_binary      a -> printf "#b%s" [ if a then '1' else '0' | a <- a ]
     Spec_constant_string      a -> show a
